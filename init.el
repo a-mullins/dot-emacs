@@ -1,11 +1,3 @@
-;; Don't display the slpash screen.
-(setq inhibit-splash-screen t)
-(setq inhibit-startup-message t)
-
-;; Use a sexy font, if possible.
-(if (member "inconsolata" (font-family-list))
-    (set-face-attribute 'default nil :family "inconsolata" :height 135))
-
 ;; Bootstrap packages.
 (require 'package)
 (add-to-list 'package-archives
@@ -26,6 +18,15 @@
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+(use-package solarized-theme
+  :ensure t
+  :config (load-theme 'solarized-dark t))
+
+;; UI & VISUALS
+(set-face-attribute 'default nil :family "inconsolata" :height 120)
+(tool-bar-mode -1)
+
 
 ;; Hooks.
 (add-hook 'prog-mode-hook 'linum-mode)
