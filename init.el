@@ -78,3 +78,4 @@
 (add-hook 'prog-mode-hook 'show-paren-mode)
 
 (setq show-paren-delay 0)
+
