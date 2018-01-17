@@ -49,9 +49,9 @@
   :ensure t
   :config (load-theme 'solarized-dark t))
 
-;; (use-package paredit
-;;   :ensure t
-;;   :init (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
+(use-package paredit
+  :ensure t
+  :config (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
 
 ;; (use-package flycheck
 ;;   :ensure t
@@ -64,11 +64,15 @@
 ;; UI / VISUAL
 ;; -------------------------------------------------------------------
 
+
 ;; go to *scratch* instead of splash
 ;;(setf initial-buffer-choice (lambda () (get-buffer-create "*Messages*")))
 (setq inhibit-splash-screen t)
 
-(set-face-attribute 'default nil :family "inconsolata" :height 180)
+;; set font & size according to which system.
+(when (string= system-name "denali")
+    (set-face-attribute 'default nil :family "inconsolata" :height 130))
+
 ;;(tool-bar-mode -1)
 
 ;; ;; Hooks.
@@ -78,4 +82,3 @@
 (add-hook 'prog-mode-hook 'show-paren-mode)
 
 (setq show-paren-delay 0)
-
