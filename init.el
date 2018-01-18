@@ -70,8 +70,10 @@
 (setq inhibit-splash-screen t)
 
 ;; set font & size according to which system.
-(when (string= system-name "denali")
-    (set-face-attribute 'default nil :family "inconsolata" :height 130))
+(if (string=  (system-name) "denali")
+    (set-face-attribute 'default nil :family "inconsolata" :height 130)
+  (set-face-attribute 'default nil :family "inconsolata" :height 180))
+
 
 ;;(tool-bar-mode -1)
 
