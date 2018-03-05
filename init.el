@@ -1,27 +1,38 @@
 ;; init.el -- emacs config
 
-;; -------------------------------------------------------------------
-;; PACKAGES
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
+;; I/O
+;;
+;; Switch to messages buffer to communicate with user during setup, &c
+;; --------------------------------------------------------------------------
 
+;; TODO: pop up temporary frame & switch to temporary buffer only if
+;; TODO: diagnostic / status messages need to be displayed.
+(setq initial-buffer-choice
+      (lambda () (get-buffer "*Messages*")))
+
+;; --------------------------------------------------------------------------
+;; PACKAGES
+;;
 ;; Bootstrap package manager.
+;; --------------------------------------------------------------------------
 
 (require 'package)
 
-(add-to-list 'package-archives
-	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+	("marmalade" . "https://marmalade-repo.org/packages/")
+	("melpa-stable" . "https://stable.melpa.org/packages/")))
 
 (package-initialize)
 
 (unless package-archive-contents
-  (switch-to-buffer "*Messages*")
-  (print "Fetching package index. This should only take a few moments.")
+  (message "Fetching package index. This should only take a few moments.")
   (package-refresh-contents))
 
 ;; Fetch and install use-package, if it isn't already installed.
 (unless (package-installed-p 'use-package)
-  (switch-to-buffer "*Messages*")
-  (print "Downloading & installage package 'use-package'.")
+  (message "Downloading and installing package 'use-package'.")
   (package-install 'use-package))
 
 ;; use-package usage:
@@ -34,16 +45,14 @@
 ;;   :ensure t
 ;;   )
 
-;; Let's give elpy a try.
 (use-package elpy
   :ensure t
   :config (elpy-enable))
 
-;; dirty hack, but whatever.
-(with-current-buffer "*scratch*"
-  (goto-char (point-max))
-  (insert (concat ";; MAKE SURE THAT ALL ELPY HELPERS ARE INSTALLED\n"
-                  ";; BY RUNNING elpy-config")))
+(message (concat "\n"
+		 "!!!   IF WORKING ON A PYTHON PROJECT    !!!\n"
+                 "!!!  ENSURE THAT ALL ELPY HELPERS ARE   !!!\n"
+		 "!!! INSTALLED BY RUNNING: 'elpy-config' !!!\n"))
 
 (use-package solarized-theme
   :ensure t
@@ -64,16 +73,17 @@
 ;; UI / VISUAL
 ;; -------------------------------------------------------------------
 
-
-;; go to *scratch* instead of splash
-;;(setf initial-buffer-choice (lambda () (get-buffer-create "*Messages*")))
-(setq inhibit-splash-screen t)
-
 ;; set font & size according to which system.
-(if (string=  (system-name) "denali")
-    (set-face-attribute 'default nil :family "inconsolata" :height 130)
-  (set-face-attribute 'default nil :family "inconsolata" :height 180))
-
+(setq init-msg-new-machine
+      "using default face, running on unknown machine named: ")
+(pcase (system-name)
+  ('"denali"
+   (set-face-attribute 'default nil :family "inconsolata" :height 130))
+  ('"Air.local"
+   (set-face-attribute 'default nil :family "inconsolata" :height 180))
+  ;; default case
+  (_ (message (concat init-msg-new-machine (system-name)))
+     (set-face-attribute 'default nil :family "inconsolata" :height 120)))
 
 ;;(tool-bar-mode -1)
 
