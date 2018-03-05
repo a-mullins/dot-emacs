@@ -45,7 +45,6 @@
 ;;   :ensure t
 ;;   )
 
-;; Let's give elpy a try.
 (use-package elpy
   :ensure t
   :config (elpy-enable))
@@ -74,13 +73,15 @@
 ;; UI / VISUAL
 ;; -------------------------------------------------------------------
 
-;; go to *scratch* instead of splash
-;;(setf initial-buffer-choice (lambda () (get-buffer-create "*Messages*")))
-(setq inhibit-splash-screen t)
-
 ;; set font & size according to which system.
-(when (string= (system-name) "denali")
-    (set-face-attribute 'default nil :family "inconsolata" :height 130))
+(setq init-msg-new-machine
+      "using default face, running on unknown machine named: ")
+(pcase (system-name)
+  ('"denali"
+   (set-face-attribute 'default nil :family "inconsolata" :height 130))
+  ;; default case
+  (_ (message (concat init-msg-new-machine (system-name)))
+     (set-face-attribute 'default nil :family "inconsolata" :height 120)))
 
 ;;(tool-bar-mode -1)
 
