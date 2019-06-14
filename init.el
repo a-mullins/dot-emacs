@@ -42,6 +42,17 @@
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
+
+  (use-package slime
+    :config
+    (add-to-list 'slime-contribs 'slime-repl)
+    (setq inferior-lisp-program "/usr/bin/clisp"))
+
+  (use-package haskell-mode
+    :config
+    (require 'haskell-interactive-mode)
+    (require 'haskell-process)
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 ) ;; END when (package-installed-p 'use-package)
 
 ;; -------------------------------------------------------------------
@@ -60,7 +71,7 @@
 (setq show-paren-delay 0)
 
 
-;; HOOKs for prog-mode. This covers python, lisp, etc etc.
+;; Hooks for prog-mode. This covers python, lisp, etc etc.
 (mapc
  (lambda (hook) (add-hook 'prog-mode-hook hook))
    '(
@@ -70,7 +81,9 @@
      show-paren-mode
      ))
 
+(push '("\\.cl\\'" . common-lisp-mode) auto-mode-alist)
+
 ;; dired mode
 (setq dired-listing-switches "-aDFhl")
 (add-hook 'dired-mode-hook
-	 (lambda () (toggle-truncate-lines 1)))
+	  (lambda () (toggle-truncate-lines 1)))
