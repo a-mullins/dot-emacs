@@ -59,7 +59,9 @@
   (use-package elpy
     :ensure t
     :defer t
-    :init (advice-add 'python-mode :before 'elpy-enable))
+    :init (advice-add 'python-mode :before 'elpy-enable)
+    (setq python-shell-interpreter "python3"
+	  python-shell-interpreter-args "-i"))
 
   (use-package solarized-theme
     :ensure t
