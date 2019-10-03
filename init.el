@@ -5,6 +5,14 @@
 (add-hook 'kill-emacs-hook
 	  (lambda () (delete-file "~/.emacs.d/custom-garbage.el")))
 
+;; Disable autosave files.
+(setq auto-save-default nil)
+;; Disable backup files if the file is under version control.
+(add-hook 'find-file-hook (lambda ()
+			    (when (vc-backend (buffer-file-name))
+			      (make-local-variable 'make-backup-files)
+			      (setq make-backup-files nil))))
+
 ;; -------------------------------------------------------------------
 ;; PACKAGES
 ;; -------------------------------------------------------------------
@@ -58,7 +66,6 @@
 ;; UI / VISUAL
 ;; -------------------------------------------------------------------
 
-;; set font & size according to which system emacs is running on.
 (apply 'set-face-attribute 'default nil
   (pcase (system-name)
     ("denali"    '(:family "inconsolata" :height 130))
