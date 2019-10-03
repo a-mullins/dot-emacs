@@ -1,5 +1,10 @@
 ;; init.el -- emacs config
 
+
+;; -------------------------------------------------------------------
+;; GLOBALS / MISC
+;; -------------------------------------------------------------------
+
 ;; Don't litter my init.
 (setq custom-file "~/.emacs.d/custom-garbage.el")
 (add-hook 'kill-emacs-hook
@@ -8,14 +13,31 @@
 ;; Disable autosave files.
 (setq auto-save-default nil)
 ;; Disable backup files if the file is under version control.
-(add-hook 'find-file-hook (lambda ()
-			    (when (vc-backend (buffer-file-name))
-			      (make-local-variable 'make-backup-files)
-			      (setq make-backup-files nil))))
+(add-hook 'find-file-hook
+	  (lambda () (when (vc-backend (buffer-file-name))
+		       (make-local-variable 'make-backup-files)
+		       (setq make-backup-files nil))))
+
+
+;; -------------------------------------------------------------------
+;; UI / VISUAL
+;; -------------------------------------------------------------------
+
+(apply 'set-face-attribute 'default nil
+  (pcase (system-name)
+    ("denali"    '(:family "inconsolata" :height 130))
+    ("Air.local" '(:family "inconsolata" :height 180))
+    (_           '(:family "inconsolata" :height 120))))
+
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(setq show-paren-delay 0)
+
 
 ;; -------------------------------------------------------------------
 ;; PACKAGES
 ;; -------------------------------------------------------------------
+
 (require 'package)
 (setq package-archives
       '(
@@ -36,7 +58,8 @@
 (when (package-installed-p 'use-package)
   (use-package elpy
     :ensure t
-    :config (elpy-enable))
+    :defer t
+    :init (advice-add 'python-mode :before 'elpy-enable))
 
   (use-package solarized-theme
     :ensure t
@@ -57,27 +80,17 @@
     :init (setq markdown-command "multimarkdown"))
 
   (use-package slime
-    :config
-    (add-to-list 'slime-contribs 'slime-repl)
-    (setq inferior-lisp-program "/usr/bin/clisp"))
+    :mode ("\\.cl\\'" . common-lisp-mode)
+    :config (add-to-list 'slime-contribs 'slime-repl)
+            (setq inferior-lisp-program "/usr/bin/clisp"))
 ) ;; END when (package-installed-p 'use-package)
 
+
 ;; -------------------------------------------------------------------
-;; UI / VISUAL
+;; MODE SETTINGS & HOOKS
 ;; -------------------------------------------------------------------
 
-(apply 'set-face-attribute 'default nil
-  (pcase (system-name)
-    ("denali"    '(:family "inconsolata" :height 130))
-    ("Air.local" '(:family "inconsolata" :height 180))
-    (_           '(:family "inconsolata" :height 120))))
-
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(setq show-paren-delay 0)
-
-
-;; Hooks for prog-mode. This covers python, lisp, etc etc.
+;; prog-mode
 (mapc
  (lambda (hook) (add-hook 'prog-mode-hook hook))
    '(
@@ -86,8 +99,6 @@
      (lambda () (toggle-truncate-lines 1))
      show-paren-mode
      ))
-
-(push '("\\.cl\\'" . common-lisp-mode) auto-mode-alist)
 
 ;; dired mode
 (setq dired-listing-switches "-aDFhl")
