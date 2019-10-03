@@ -10,6 +10,9 @@
 (add-hook 'kill-emacs-hook
           (lambda () (delete-file "~/.emacs.d/custom-garbage.el")))
 
+;; Don't insert tab characters.
+(setq-default indent-tabs-mode nil)
+
 ;; Disable autosave files.
 (setq auto-save-default nil)
 ;; Disable backup files if the file is under version control.
@@ -59,7 +62,8 @@
   (use-package elpy
     :ensure t
     :defer t
-    :init (advice-add 'python-mode :before 'elpy-enable)
+    :init
+    (advice-add 'python-mode :before 'elpy-enable)
     (setq python-shell-interpreter "python3"
           python-shell-interpreter-args "-i"))
 
@@ -83,7 +87,8 @@
 
   (use-package slime
     :mode ("\\.cl\\'" . common-lisp-mode)
-    :config (add-to-list 'slime-contribs 'slime-repl)
+    :config
+    (add-to-list 'slime-contribs 'slime-repl)
     (setq inferior-lisp-program "/usr/bin/clisp"))
   ) ;; END when (package-installed-p 'use-package)
 
