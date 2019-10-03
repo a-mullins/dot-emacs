@@ -1,5 +1,10 @@
 ;; init.el -- emacs config
 
+;; Don't litter my init.
+(setq custom-file "~/.emacs.d/custom-garbage.el")
+(add-hook 'kill-emacs-hook
+	  (lambda () (delete-file "~/.emacs.d/custom-garbage.el")))
+
 ;; -------------------------------------------------------------------
 ;; PACKAGES
 ;; -------------------------------------------------------------------
