@@ -8,15 +8,15 @@
 ;; Don't litter my init.
 (setq custom-file "~/.emacs.d/custom-garbage.el")
 (add-hook 'kill-emacs-hook
-	  (lambda () (delete-file "~/.emacs.d/custom-garbage.el")))
+          (lambda () (delete-file "~/.emacs.d/custom-garbage.el")))
 
 ;; Disable autosave files.
 (setq auto-save-default nil)
 ;; Disable backup files if the file is under version control.
 (add-hook 'find-file-hook
-	  (lambda () (when (vc-backend (buffer-file-name))
-		       (make-local-variable 'make-backup-files)
-		       (setq make-backup-files nil))))
+          (lambda () (when (vc-backend (buffer-file-name))
+                       (make-local-variable 'make-backup-files)
+                       (setq make-backup-files nil))))
 
 
 ;; -------------------------------------------------------------------
@@ -24,10 +24,10 @@
 ;; -------------------------------------------------------------------
 
 (apply 'set-face-attribute 'default nil
-  (pcase (system-name)
-    ("denali"    '(:family "inconsolata" :height 130))
-    ("Air.local" '(:family "inconsolata" :height 180))
-    (_           '(:family "inconsolata" :height 120))))
+       (pcase (system-name)
+         ("denali"    '(:family "inconsolata" :height 130))
+         ("Air.local" '(:family "inconsolata" :height 180))
+         (_           '(:family "inconsolata" :height 120))))
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -41,11 +41,11 @@
 (require 'package)
 (setq package-archives
       '(
-	("gnu" . "https://elpa.gnu.org/packages/")
-	("melpa-stable" . "https://stable.melpa.org/packages/")
-	;; ("melpa" . "https://melpa.org/packages/")
-	;; ("marmalade" . "https://marmalade-repo.org/packages/")
-	))
+        ("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ;; ("melpa" . "https://melpa.org/packages/")
+        ;; ("marmalade" . "https://marmalade-repo.org/packages/")
+        ))
 (package-initialize)
 ;; Archive listings and installed packages should now be available.
 
@@ -61,7 +61,7 @@
     :defer t
     :init (advice-add 'python-mode :before 'elpy-enable)
     (setq python-shell-interpreter "python3"
-	  python-shell-interpreter-args "-i"))
+          python-shell-interpreter-args "-i"))
 
   (use-package solarized-theme
     :ensure t
@@ -70,8 +70,8 @@
   (use-package paredit
     :ensure t
     :init
-      (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-      (add-hook 'lisp-mode-hook 'paredit-mode))
+    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+    (add-hook 'lisp-mode-hook 'paredit-mode))
 
   (use-package markdown-mode
     :ensure t
@@ -84,8 +84,8 @@
   (use-package slime
     :mode ("\\.cl\\'" . common-lisp-mode)
     :config (add-to-list 'slime-contribs 'slime-repl)
-            (setq inferior-lisp-program "/usr/bin/clisp"))
-) ;; END when (package-installed-p 'use-package)
+    (setq inferior-lisp-program "/usr/bin/clisp"))
+  ) ;; END when (package-installed-p 'use-package)
 
 
 ;; -------------------------------------------------------------------
@@ -95,14 +95,14 @@
 ;; prog-mode
 (mapc
  (lambda (hook) (add-hook 'prog-mode-hook hook))
-   '(
-     linum-mode
-     column-number-mode
-     (lambda () (toggle-truncate-lines 1))
-     show-paren-mode
-     ))
+ '(
+   linum-mode
+   column-number-mode
+   (lambda () (toggle-truncate-lines 1))
+   show-paren-mode
+   ))
 
 ;; dired mode
 (setq dired-listing-switches "-aDFhl")
 (add-hook 'dired-mode-hook
-	  (lambda () (toggle-truncate-lines 1)))
+          (lambda () (toggle-truncate-lines 1)))
