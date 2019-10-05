@@ -8,7 +8,8 @@
 ;; Don't litter my init.
 (setq custom-file "~/.emacs.d/custom-garbage.el")
 (add-hook 'kill-emacs-hook
-          (lambda () (delete-file "~/.emacs.d/custom-garbage.el")))
+          (lambda () (if (file-exists-p "~/.emacs.d/custom-garbage.el")
+                         (delete-file "~/.emacs.d/custom-garbage.el"))))
 
 ;; Don't insert tab characters.
 (setq-default indent-tabs-mode nil)
@@ -64,7 +65,7 @@
     :defer t
     :init
     (advice-add 'python-mode :before 'elpy-enable)
-    (setq python-shell-interpreter "python3"
+    (setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3"
           python-shell-interpreter-args "-i"))
 
   (use-package solarized-theme
