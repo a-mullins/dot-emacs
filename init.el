@@ -65,7 +65,7 @@
     :defer t
     :init
     (advice-add 'python-mode :before 'elpy-enable)
-    (setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3"
+    (setq python-shell-interpreter "python3"
           python-shell-interpreter-args "-i"))
 
   (use-package solarized-theme
