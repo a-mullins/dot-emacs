@@ -30,7 +30,7 @@
 (apply 'set-face-attribute 'default nil
        (pcase (system-name)
          ("denali"    '(:family "inconsolata" :height 130))
-         ("Air.local" '(:family "inconsolata" :height 180))
+         ("Air.local" '(:family "monaco" :height 160))
          (_           '(:family "inconsolata" :height 120))))
 
 (tool-bar-mode -1)
