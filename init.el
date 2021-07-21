@@ -30,8 +30,8 @@
 (apply 'set-face-attribute 'default nil
        (pcase (system-name)
          ("denali"    '(:family "inconsolata" :height 140))
-         ("deimos   " '(:family "monaco" :height 160))
-         (_           '(:family "inconsolata" :height 130))))
+         ("deimos"    '(:family "monaco" :height 150))
+         (_           '(:family "courier" :height 150))))
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
