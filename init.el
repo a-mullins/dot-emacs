@@ -27,11 +27,16 @@
 ;; UI / VISUAL
 ;; -------------------------------------------------------------------
 
-(apply 'set-face-attribute 'default nil
-       (pcase (system-name)
-         ("denali"    '(:family "inconsolata" :height 140))
-         ("deimos"    '(:family "monaco" :height 150))
-         (_           '(:family "courier" :height 150))))
+(set-face-attribute 'default nil
+                    :family "inconsolata" :height 140)
+;; specify machine-specific faces in local override file instead.
+;; see LOCAL OVERRIDES section.
+;;
+;; (apply 'set-face-attribute 'default nil
+;;        (pcase (system-name)
+;;          ("denali"    '(:family "inconsolata" :height 140))
+;;          ("deimos"    '(:family "monaco" :height 150))
+;;          (_           '(:family "courier" :height 150))))
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -131,3 +136,9 @@
 (setq dired-listing-switches "-aDFhl")
 (add-hook 'dired-mode-hook
           (lambda () (toggle-truncate-lines 1)))
+
+;; -------------------------------------------------------------------
+;; LOCAL OVERRIDES
+;; -------------------------------------------------------------------
+
+(load "~/.emacs.d/local-machine" t)
