@@ -16,6 +16,7 @@
 
 ;; Disable autosave files.
 (setq auto-save-default nil)
+
 ;; Disable backup files if the file is under version control.
 (add-hook 'find-file-hook
           (lambda () (when (vc-backend (buffer-file-name))
@@ -27,8 +28,6 @@
 ;; UI / VISUAL
 ;; -------------------------------------------------------------------
 
-(set-face-attribute 'default nil
-                    :family "inconsolata" :height 140)
 ;; specify machine-specific faces in local override file instead.
 ;; see LOCAL OVERRIDES section.
 ;;
@@ -133,7 +132,7 @@
    ))
 
 ;; dired mode
-(setq dired-listing-switches "-aDFhl")
+(setq dired-listing-switches "-DFhlX --group-directories-first")
 (add-hook 'dired-mode-hook
           (lambda () (toggle-truncate-lines 1)))
 
@@ -141,4 +140,4 @@
 ;; LOCAL OVERRIDES
 ;; -------------------------------------------------------------------
 
-(load "~/.emacs.d/local-machine" t)
+(load "~/.emacs.d/local-machine")
