@@ -140,4 +140,4 @@
 ;; LOCAL OVERRIDES
 ;; -------------------------------------------------------------------
 
-(load "~/.emacs.d/local-machine")
+(load "~/.emacs.d/local-machine" t t)
