@@ -90,6 +90,18 @@
     ;;(add-to-list 'exec-path (expand-file-name "~/.local/bin"))
     )
 
+  (use-package js-comint
+    :ensure t
+    :config
+    (add-hook 'js-mode-hook (lambda ()
+                              (define-key js-mode-map (kbd "C-x e")
+                                'js-comint-send-last-sexp)
+                              (define-key js-mode-map (kbd "C-c b")
+                                'js-comint-send-buffer)
+                              (define-key js-mode-map (kbd "C-c r")
+                                'js-comint-send-region)
+                              )))
+
   ;; TODO: only turn on when window size is > 80 col?
   ;; (use-package fill-column-indicator
   ;;   :ensure t
