@@ -1,9 +1,9 @@
 ;; init.el -- emacs config
 
 
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 ;; GLOBALS / MISC
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 
 ;; Don't litter my init.
 (setq custom-file "~/.emacs.d/custom-garbage.el")
@@ -24,9 +24,9 @@
                        (setq make-backup-files nil))))
 
 
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 ;; UI / VISUAL
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 
 ;; specify machine-specific faces in local override file instead.
 ;; see LOCAL OVERRIDES section.
@@ -42,9 +42,9 @@
 (setq show-paren-delay 0)
 
 
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 ;; PACKAGES
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 
 (require 'package)
 (setq package-archives
@@ -129,9 +129,9 @@
 ) ;; END when (package-installed-p 'use-package)
 
 
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 ;; MODE SETTINGS & HOOKS
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 
 ;; prog-mode
 (mapc
@@ -148,8 +148,45 @@
 (add-hook 'dired-mode-hook
           (lambda () (toggle-truncate-lines 1)))
 
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
+;; GTD & ORG-MODE
+;; --------------------------------------------------------------------------
+
+;; This section uses org mode to implement David Allen's Getting
+;; Things Done productivity system. It may not be useful for others
+;; since each person's specific GTD setup is likely to be a little
+;; different.
+;;
+;; Parts of this config were inspired by Nicolas Rougier's blog post:
+;;   https://www.labri.fr/perso/nrougier/GTD/index.html
+
+
+;; --=[ 0. Prelude ]=--
+(require 'org)
+(setq org-directory "~/Documents/gtd/")
+(setq org-agenda-files
+      (directory-files-recursively org-directory "\\`[^.].*\\.org\\'"))
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+(setq org-mobile-inbox-for-pull "~/Documents/gtd/from-mobile.org")
+
+;; --=[ 1. Capture ]=--
+;; note that the inbox entries are not TODOs in the org-mode sense.
+;; this is because, in the GTD process, we have not yet decided if
+;; the item is even actionable. So they shouldn't show up in
+;; TODO-oriented agenda views, etc. We can still collect them using
+;; tags.
+(define-key global-map (kbd "C-c c") 'org-capture)
+(setq org-capture-templates
+      '(
+        ("i" "Inbox" entry (file "inbox.org")
+         "* %?\n%U")))
+
+;; --=[ 2. Process ]=--
+(define-key global-map (kbd "C-c a") 'org-agenda)
+(add-hook 'org-agenda-mode-hook 'delete-other-windows)
+
+;; --------------------------------------------------------------------------
 ;; LOCAL OVERRIDES
-;; -------------------------------------------------------------------
+;; --------------------------------------------------------------------------
 
 (load "~/.emacs.d/local-machine" t t)
