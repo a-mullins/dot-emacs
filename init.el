@@ -68,9 +68,12 @@
   ;; (use-package solarized-theme
   ;;   :ensure t
   ;;   :config (load-theme 'solarized-dark t))
-  (use-package subatomic-theme
+  ;; (use-package subatomic-theme
+  ;;   :ensure t
+  ;;   :config (load-theme 'subatomic t))
+  (use-package badwolf-theme
     :ensure t
-    :config (load-theme 'subatomic t))
+    :config (load-theme 'badwolf t))
 
   (use-package paredit
     :ensure t
@@ -163,27 +166,35 @@
 
 ;; --=[ 0. Prelude ]=--
 (require 'org)
-(setq org-directory "~/Documents/gtd/")
-(setq org-agenda-files
-      (directory-files-recursively org-directory "\\`[^.].*\\.org\\'"))
-(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-(setq org-mobile-inbox-for-pull "~/Documents/gtd/from-mobile.org")
+(setq org-directory             "~/Documents/gtd/"
+      org-agenda-files          (directory-files-recursively org-directory "\\`[^.].*\\.org\\'")
+      org-mobile-directory      "~/Dropbox/Apps/MobileOrg"
+      org-mobile-inbox-for-pull "~/Documents/gtd/from-mobile.org")
 
 ;; --=[ 1. Capture ]=--
 ;; note that the inbox entries are not TODOs in the org-mode sense.
 ;; this is because, in the GTD process, we have not yet decided if
-;; the item is even actionable. So they shouldn't show up in
-;; TODO-oriented agenda views, etc. We can still collect them using
-;; tags.
+;; the item is even actionable, so they shouldn't show up in
+;; TODO-oriented agenda views. We can still collect them
+;; using tags.
 (define-key global-map (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(
-        ("i" "Inbox" entry (file "inbox.org")
+      '(("i" "Inbox" entry (file "inbox.org")
          "* %?\n%U")))
 
 ;; --=[ 2. Process ]=--
+;; The inbox should be regularly emptied, with the items being sent
+;; to different buckets. The org-refile (bound to C-c C-w) function
+;; can be leveraged to accomplish this.
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (add-hook 'org-agenda-mode-hook 'delete-other-windows)
+
+;; Most common. Refile inbox item to next-actions.org or a project.
+;; This could be cleaned up a little.
+;; TODO also nice would be to modify the headline after it is moved
+;;      so that it becomes a TODO item, depending on its destination.
+(setq org-refile-use-outline-path 'file)
+(setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
 
 ;; --------------------------------------------------------------------------
 ;; LOCAL OVERRIDES
