@@ -1,6 +1,5 @@
 ;; init.el -- emacs config
 
-
 ;; --------------------------------------------------------------------------
 ;; GLOBALS / MISC
 ;; --------------------------------------------------------------------------
@@ -86,20 +85,22 @@
 ;; MODE SETTINGS & HOOKS
 ;; --------------------------------------------------------------------------
 
+(defun trunc-long-lines ()
+  (toggle-truncate-lines 1))
+
 ;; prog-mode
 (mapc
- (lambda (hook) (add-hook 'prog-mode-hook hook))
+ (lambda (f) (add-hook 'prog-mode-hook f))
  '(
    linum-mode
    column-number-mode
-   (lambda () (toggle-truncate-lines 1))
+   trunc-long-lines
    show-paren-mode
    ))
 
 ;; dired mode
 (setq dired-listing-switches "-DFhlX --group-directories-first")
-(add-hook 'dired-mode-hook
-          (lambda () (toggle-truncate-lines 1)))
+(add-hook 'dired-mode-hook 'trunc-long-lines)
 
 
 ;; --------------------------------------------------------------------------
@@ -121,6 +122,7 @@
       org-agenda-files          (directory-files-recursively org-directory "\\`[^.].*\\.org\\'")
       org-mobile-directory      "~/Dropbox/Apps/MobileOrg"
       org-mobile-inbox-for-pull "~/Documents/gtd/from-mobile.org")
+
 
 ;; --=[ 1. Capture ]=--
 ;; note that the inbox entries are not TODOs in the org-mode sense.
