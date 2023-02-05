@@ -6,39 +6,25 @@
 ;; --------------------------------------------------------------------------
 
 ;; Don't litter my init.
-(setq custom-file "~/.emacs.d/custom-garbage.el")
-(add-hook 'kill-emacs-hook
-          (lambda () (if (file-exists-p "~/.emacs.d/custom-garbage.el")
-                         (delete-file "~/.emacs.d/custom-garbage.el"))))
+(setq custom-file "/dev/null")
 
-;; Don't insert tab characters.
 (setq-default indent-tabs-mode nil)
 
-;; Disable autosave files.
-(setq auto-save-default nil)
-
 ;; Disable backup files if the file is under version control.
-(add-hook 'find-file-hook
-          (lambda () (when (vc-backend (buffer-file-name))
-                       (make-local-variable 'make-backup-files)
-                       (setq make-backup-files nil))))
+;; Could add a lambda, but this keeps the contents of find-file-hook cleaner.
+(defun disable-backups-under-vc ()
+  (when (vc-backend (buffer-file-name))
+    (make-local-variable 'make-backup-files)
+    (setq make-backup-files nil)))
+(add-hook 'find-file-hook 'disable-backups-under-vc)
 
 
 ;; --------------------------------------------------------------------------
 ;; UI / VISUAL
 ;; --------------------------------------------------------------------------
 
-;; specify machine-specific faces in local override file instead.
-;; see LOCAL OVERRIDES section.
-;;
-;; (apply 'set-face-attribute 'default nil
-;;        (pcase (system-name)
-;;          ("denali"    '(:family "inconsolata" :height 140))
-;;          ("deimos"    '(:family "monaco" :height 150))
-;;          (_           '(:family "courier" :height 150))))
-
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
 (setq show-paren-delay 0)
 
 
@@ -55,7 +41,6 @@
         ;; ("marmalade" . "https://marmalade-repo.org/packages/")
         ))
 (package-initialize)
-;; Archive listings and installed packages should now be available.
 
 ;; If use-package is missing, prompt to download now.
 (unless (package-installed-p 'use-package)
@@ -65,12 +50,6 @@
 
 ;; Packages are sorted by approximate frequency of use.
 (when (package-installed-p 'use-package)
-  ;; (use-package solarized-theme
-  ;;   :ensure t
-  ;;   :config (load-theme 'solarized-dark t))
-  ;; (use-package subatomic-theme
-  ;;   :ensure t
-  ;;   :config (load-theme 'subatomic t))
   (use-package badwolf-theme
     :ensure t
     :config (load-theme 'badwolf t))
@@ -90,45 +69,16 @@
           python-shell-interpreter "python3"
           python-shell-interpreter-args "-i"
           elpy-rpc-python-command "python3")
-    ;;(add-to-list 'exec-path (expand-file-name "~/.local/bin"))
     )
 
   (use-package js-comint
     :ensure t
     :config
-    (add-hook 'js-mode-hook (lambda ()
-                              (define-key js-mode-map (kbd "C-x e")
-                                'js-comint-send-last-sexp)
-                              (define-key js-mode-map (kbd "C-c b")
-                                'js-comint-send-buffer)
-                              (define-key js-mode-map (kbd "C-c r")
-                                'js-comint-send-region)
-                              )))
-
-  ;; TODO: only turn on when window size is > 80 col?
-  ;; (use-package fill-column-indicator
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq fci-rule-column 80)
-  ;;   :config
-  ;;   (add-hook 'prog-mode-hook
-  ;;             (lambda () (fci-mode 1))
-  ;;             ))
-
-  ;; (use-package markdown-mode
-  ;;   :ensure t
-  ;;   :commands (markdown-mode gfm-mode)
-  ;;   :mode (("README\\.md\\'" . gfm-mode)
-  ;;          ("\\.md\\'" . markdown-mode)
-  ;;          ("\\.markdown\\'" . markdown-mode))
-  ;;   :init (setq markdown-command "multimarkdown"))
-
-  ;; (use-package slime
-  ;;   :mode ("\\.cl\\'" . common-lisp-mode)
-  ;;   :config
-  ;;   (add-to-list 'slime-contribs 'slime-repl)
-  ;;   (setq inferior-lisp-program "/usr/bin/clisp"))
-
+    (defun make-js-mode-map ()
+      (define-key js-mode-map (kbd "C-x e") 'js-comint-send-last-sexp)
+      (define-key js-mode-map (kbd "C-c b") 'js-comint-send-buffer)
+      (define-key js-mode-map (kbd "C-c r") 'js-comint-send-region))
+    (add-hook 'js-mode-hook 'make-js-mode-map))
 ) ;; END when (package-installed-p 'use-package)
 
 
@@ -150,6 +100,7 @@
 (setq dired-listing-switches "-DFhlX --group-directories-first")
 (add-hook 'dired-mode-hook
           (lambda () (toggle-truncate-lines 1)))
+
 
 ;; --------------------------------------------------------------------------
 ;; GTD & ORG-MODE
@@ -195,6 +146,7 @@
 ;;      so that it becomes a TODO item, depending on its destination.
 (setq org-refile-use-outline-path 'file)
 (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
+
 
 ;; --------------------------------------------------------------------------
 ;; LOCAL OVERRIDES
