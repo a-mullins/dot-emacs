@@ -11,6 +11,8 @@
 
 ;; Disable backup files if the file is under version control.
 ;; Could add a lambda, but this keeps the contents of find-file-hook cleaner.
+;; TODO: Do not use ‘make-local-variable’ to make a hook variable buffer-local.
+;;       Instead, use ‘add-hook’ and specify t for the LOCAL argument.
 (defun disable-backups-under-vc ()
   (when (vc-backend (buffer-file-name))
     (make-local-variable 'make-backup-files)
@@ -86,6 +88,7 @@
 ;; --------------------------------------------------------------------------
 
 (defun trunc-long-lines ()
+  "Always trunc long lines, calls (toggle-truncate-lines 1)."
   (toggle-truncate-lines 1))
 
 ;; prog-mode
@@ -141,13 +144,14 @@
 ;; can be leveraged to accomplish this.
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (add-hook 'org-agenda-mode-hook 'delete-other-windows)
+(setq org-deadline-warning-days 5)
 
 ;; Most common. Refile inbox item to next-actions.org or a project.
 ;; This could be cleaned up a little.
 ;; TODO also nice would be to modify the headline after it is moved
 ;;      so that it becomes a TODO item, depending on its destination.
-(setq org-refile-use-outline-path 'file)
-(setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
+(setq org-refile-use-outline-path 'file
+      org-refile-targets '((org-agenda-files :maxlevel . 1)))
 
 
 ;; --------------------------------------------------------------------------
