@@ -69,17 +69,30 @@
     (setq
           python-shell-interpreter "python3"
           python-shell-interpreter-args "-i"
-          elpy-rpc-python-command "python3")
-    )
+          elpy-rpc-python-command "python3"))
+
+  (use-package js2-mode
+    :mode ("\\.js[mx]?\\'" . js2-mode)
+    :interpreter (("nodejs" . js2-mode)
+                  ("node" . js2-mode))
+    :bind (:map js-mode-map
+                ("C-x e" . js-comint-send-last-sexp)
+                ("C-c b" . js-comint-send-buffer)
+                ("C-c r" . js-comint-send-region)))
+
 
   (use-package js-comint
-    :ensure t
-    :config
-    (defun make-js-mode-map ()
-      (define-key js-mode-map (kbd "C-x e") 'js-comint-send-last-sexp)
-      (define-key js-mode-map (kbd "C-c b") 'js-comint-send-buffer)
-      (define-key js-mode-map (kbd "C-c r") 'js-comint-send-region))
-    (add-hook 'js-mode-hook 'make-js-mode-map))
+    :bind (:map js-mode-map
+                ("C-x e" . js-comint-send-last-sexp)
+                ("C-c b" . js-comint-send-buffer)
+                ("C-c r" . js-comint-send-region))
+    ;; :config
+    ;; (defun make-js-mode-map ()
+    ;;   (define-key js-mode-map (kbd "C-x e") 'js-comint-send-last-sexp)
+    ;;   (define-key js-mode-map (kbd "C-c b") 'js-comint-send-buffer)
+    ;;   (define-key js-mode-map (kbd "C-c r") 'js-comint-send-region))
+    ;; (add-hook 'js-mode-hook 'make-js-mode-map)
+    )
 ) ;; END when (package-installed-p 'use-package)
 
 
