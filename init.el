@@ -37,8 +37,8 @@
 (setq package-archives
       '(
         ("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ;; ("melpa" . "https://melpa.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")
+        ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
         ;; ("marmalade" . "https://marmalade-repo.org/packages/")
         ))
 (package-initialize)
@@ -66,10 +66,11 @@
     :defer t
     :init
     (advice-add 'python-mode :before 'elpy-enable)
-    (setq
-          python-shell-interpreter "python3"
-          python-shell-interpreter-args "-i"
-          elpy-rpc-python-command "python3"))
+    ;; (setq
+    ;;       python-shell-interpreter "python3"
+    ;;       python-shell-interpreter-args "-i"
+    ;;       elpy-rpc-python-command "python3")
+    )
 
   (use-package js2-mode
     :mode ("\\.js[mx]?\\'" . js2-mode)
