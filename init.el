@@ -21,12 +21,12 @@
 (add-hook 'find-file-hook 'disable-backups-under-vc)
 
 
-;; (defun x/delete-whitespace ()
-;;     (unless (or (string= major-mode 'diff-mode)
-;;                 (string= major-mode 'hexl-mode))
-;;       (delete-trailing-whitespace)))
+(defun delete-whitespace ()
+    (unless (or (string= major-mode 'diff-mode)
+                (string= major-mode 'hexl-mode))
+      (delete-trailing-whitespace)))
 
-;; (add-hook 'before-save-hook 'x/delete-whitespace)
+(add-hook 'before-save-hook 'delete-whitespace)
 
 
 ;; --------------------------------------------------------------------------
@@ -103,6 +103,7 @@
                 ("C-c r" . js-comint-send-region)))
 
   (use-package web-mode
+    :ensure t
     :custom
     (web-mode-markup-indent-offset 2)
     (web-mode-css-indent-offset 2)
