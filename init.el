@@ -79,10 +79,10 @@
     :defer t
     :init
     (advice-add 'python-mode :before 'elpy-enable)
-    ;; (setq
-    ;;       python-shell-interpreter "python3"
-    ;;       python-shell-interpreter-args "-i"
-    ;;       elpy-rpc-python-command "python3")
+    (setq
+          python-shell-interpreter "python3.11"
+          python-shell-interpreter-args "-i"
+          elpy-rpc-python-command "python3.11")
     )
 
   (use-package js2-mode
@@ -192,7 +192,7 @@
 ;; can be leveraged to accomplish this.
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (add-hook 'org-agenda-mode-hook 'delete-other-windows)
-(setq org-deadline-warning-days 3)
+(setq org-deadline-warning-days 5)
 
 ;; Most common. Refile inbox item to next-actions.org or a project.
 ;; This could be cleaned up a little.
@@ -236,7 +236,7 @@
                                                   "Late %02d d.: "))
                    (org-agenda-scheduled-leaders '(" Scheduled: "
                                                    " Sched.%2dx: "))
-                   (org-deadline-warning-days 7)
+                   (org-deadline-warning-days 5)
                    ;; (org-agenda-skip-function
                    ;;  '(org-agenda-skip-entry-if 'notregexp "\\* NEXT"))
                    (org-agenda-overriding-header (concat
@@ -254,6 +254,10 @@
                 ((org-agenda-prefix-format '((tags . "  % s")))
                  (org-agenda-overriding-header "\nCompleted Today:"))))
          ((org-agenda-block-separator nil)))))
+
+;; ;; (set-face-background 'hl-line "#A3813E")
+;; (set-face-background 'hl-line "#CE982C")
+;; (set-face-foreground 'hl-line "#000000")
 
 ;; --------------------------------------------------------------------------
 ;; LOCAL OVERRIDES
