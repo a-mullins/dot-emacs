@@ -78,17 +78,20 @@
                            (:sunset  . solarized-selenized-dark)))
   (circadian-setup))
 
+(defun markdown-hide-urls ()
+  "Calls (markdown-toggle-url-hiding t)"
+  (markdown-toggle-url-hiding t))
+
 ;; TODO export html style tags instead of xhtml and embed css styling
 ;;      information. ref: markdown-command
 (use-package markdown-mode
   :ensure t
-  :config (add-hook 'markdown-mode-hook 'visual-line-mode)
-  (add-hook 'markdown-mode-hook
-            (lambda () (markdown-toggle-url-hiding t))))
+  :hook ((markdown-mode . visual-line-mode)
+         (markdown-mode . markdown-hide-urls)))
 
 (use-package paredit
   :ensure t
-  :init (add-hook 'lisp-data-mode-hook 'paredit-mode))
+  :hook lisp-data-mode)
 
 
 ;; --------------------------------------------------------------------------
